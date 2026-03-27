@@ -1,0 +1,1592 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>WishCraft — Turn Emotions into Digital Memories</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500;600&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet"/>
+<style>
+/* ============ ROOT ============ */
+:root{
+  --gold:#e8b86d;--gold-light:#f5d28a;--gold-dark:#c4903a;
+  --rose:#e87d8b;--rose-dark:#c45565;
+  --deep:#0a0612;--dark:#110e1c;--card:#1a1528;--card2:#201b34;
+  --text:#f0e8ff;--muted:#9080b0;--border:rgba(232,184,109,0.18);
+  --grad:linear-gradient(135deg,#e8b86d,#e87d8b);
+  --success:#4caf82;--error:#e85d5d;--warn:#e8a84d;
+  --shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{background:var(--deep);color:var(--text);font-family:'DM Sans',sans-serif;min-height:100vh;overflow-x:hidden}
+::-webkit-scrollbar{width:5px}::-webkit-scrollbar-track{background:var(--dark)}::-webkit-scrollbar-thumb{background:var(--gold-dark);border-radius:3px}
+
+/* ============ NAV ============ */
+nav{position:fixed;top:0;left:0;right:0;z-index:500;padding:16px 40px;display:flex;align-items:center;justify-content:space-between;background:rgba(10,6,18,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);transition:.3s}
+.logo{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:2px;cursor:pointer;text-decoration:none}
+.nav-links{display:flex;gap:24px;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.88rem;font-weight:500;transition:.3s;letter-spacing:.4px;cursor:pointer}
+.nav-links a:hover{color:var(--gold)}
+.nav-right{display:flex;align-items:center;gap:14px}
+.nav-user{display:flex;align-items:center;gap:10px;background:rgba(232,184,109,0.1);border:1px solid var(--border);border-radius:30px;padding:6px 16px;cursor:pointer;transition:.3s}
+.nav-user:hover{border-color:var(--gold)}
+.nav-avatar{width:28px;height:28px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:.85rem;font-weight:700;color:#0a0612}
+.nav-username{font-size:.85rem;font-weight:600;color:var(--text);max-width:100px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.nav-cta{background:var(--grad);color:#0a0612;padding:8px 20px;border-radius:30px;font-weight:700;font-size:.85rem;cursor:pointer;border:none;font-family:'DM Sans',sans-serif;transition:.3s;white-space:nowrap}
+.nav-cta:hover{transform:translateY(-2px);box-shadow:0 8px 25px rgba(232,184,109,.4)}
+
+/* ============ HERO ============ */
+#hero{position:relative;min-height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden;padding-top:80px}
+#particles-canvas{position:absolute;inset:0;pointer-events:none}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 80% 60% at 50% 30%,rgba(124,58,237,.25) 0%,transparent 65%),radial-gradient(ellipse 60% 40% at 80% 70%,rgba(232,125,139,.2) 0%,transparent 60%),var(--deep)}
+.hero-glow{position:absolute;width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(232,184,109,.12),transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);animation:pulse-glow 4s ease-in-out infinite}
+@keyframes pulse-glow{0%,100%{transform:translate(-50%,-50%) scale(1);opacity:.6}50%{transform:translate(-50%,-50%) scale(1.2);opacity:1}}
+.hero-content{position:relative;z-index:2;text-align:center;max-width:900px;padding:0 24px}
+.hero-badge{display:inline-flex;align-items:center;gap:8px;background:rgba(232,184,109,.12);border:1px solid var(--border);border-radius:30px;padding:6px 18px;font-size:.78rem;color:var(--gold);letter-spacing:1px;margin-bottom:28px;animation:fadeUp 1s both}
+.hero-badge .dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--gold);animation:blink 1.5s ease-in-out infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.hero-title{font-family:'Playfair Display',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:900;line-height:1.08;margin-bottom:22px;animation:fadeUp .8s .2s both}
+.hero-title .line1{display:block;color:var(--text)}
+.hero-title .line2{display:block;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent;font-style:italic}
+.hero-sub{font-size:1.1rem;color:var(--muted);max-width:580px;margin:0 auto 36px;line-height:1.7;animation:fadeUp .8s .4s both}
+.hero-tags{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:44px;animation:fadeUp .8s .5s both}
+.hero-tag{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:6px 16px;font-size:.83rem}
+.hero-btns{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;animation:fadeUp .8s .6s both}
+.btn-primary{background:var(--grad);color:#0a0612;padding:13px 34px;border-radius:50px;font-weight:700;font-size:.95rem;border:none;cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif;letter-spacing:.3px}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 15px 40px rgba(232,184,109,.35)}
+.btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+.btn-outline{background:transparent;color:var(--text);padding:13px 34px;border-radius:50px;font-weight:600;font-size:.95rem;border:1px solid var(--border);cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif}
+.btn-outline:hover{border-color:var(--gold);color:var(--gold);background:rgba(232,184,109,.06)}
+.hero-scroll{position:absolute;bottom:30px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;animation:fadeUp .8s 1s both}
+.hero-scroll span{font-size:.7rem;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+.scroll-arrow{width:22px;height:22px;border-right:2px solid var(--gold);border-bottom:2px solid var(--gold);transform:rotate(45deg);animation:bounce 2s infinite}
+@keyframes bounce{0%,100%{transform:rotate(45deg) translateY(0)}50%{transform:rotate(45deg) translateY(6px)}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+
+/* ============ STATS ============ */
+.stats-bar{background:rgba(26,21,40,.8);border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:26px 0}
+.stats-inner{max-width:1100px;margin:0 auto;display:flex;justify-content:space-around;flex-wrap:wrap;gap:20px;padding:0 24px}
+.stat{text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:2rem;font-weight:700;background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.stat-label{font-size:.75rem;color:var(--muted);letter-spacing:1px;text-transform:uppercase}
+
+/* ============ SECTIONS ============ */
+section{padding:90px 24px}
+.section-inner{max-width:1200px;margin:0 auto}
+.section-tag{display:inline-block;font-size:.72rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;font-weight:600}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(1.8rem,4vw,3rem);font-weight:700;margin-bottom:14px;line-height:1.2}
+.section-sub{color:var(--muted);font-size:1rem;max-width:560px;line-height:1.7;margin-bottom:50px}
+
+/* ============ OCCASION ============ */
+#occasion{background:linear-gradient(180deg,var(--deep),var(--dark))}
+.occasion-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:24px;margin-top:40px}
+.occasion-card{border-radius:22px;overflow:hidden;cursor:pointer;transition:.3s;border:2px solid transparent;background:var(--card)}
+.occasion-card:hover{transform:translateY(-7px);box-shadow:0 28px 65px rgba(0,0,0,.5)}
+.occasion-card.active{border-color:var(--gold);box-shadow:0 0 40px rgba(232,184,109,.2)}
+.occ-img{width:100%;height:220px;display:flex;align-items:center;justify-content:center;font-size:5rem;background:linear-gradient(135deg,rgba(124,58,237,.25),rgba(232,125,139,.25))}
+.occ-body{padding:24px}
+.occ-body h3{font-family:'Playfair Display',serif;font-size:1.6rem;margin-bottom:8px}
+.occ-body p{color:var(--muted);font-size:.9rem;line-height:1.6;margin-bottom:16px}
+.badge-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}
+.badge{background:rgba(232,184,109,.1);border:1px solid rgba(232,184,109,.22);border-radius:20px;padding:3px 11px;font-size:.76rem;color:var(--gold)}
+.sel-btn{width:100%;padding:12px;border-radius:11px;border:none;font-weight:700;font-size:.95rem;cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif}
+.sel-btn-b{background:linear-gradient(135deg,#e8b86d,#f5a623);color:#0a0612}
+.sel-btn-a{background:linear-gradient(135deg,#e87d8b,#c45565);color:#fff}
+.sel-btn:hover{transform:scale(1.02)}
+
+/* ============ CATEGORIES ============ */
+#categories{background:var(--dark)}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.cat-card{background:var(--card);border-radius:18px;padding:26px;border:1px solid var(--border);cursor:pointer;transition:.3s;position:relative;overflow:hidden}
+.cat-card::before{content:'';position:absolute;inset:0;background:var(--grad);opacity:0;transition:.3s}
+.cat-card:hover::before,.cat-card.active::before{opacity:.05}
+.cat-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.cat-card.active{border-color:var(--gold);box-shadow:0 0 28px rgba(232,184,109,.18)}
+.cat-icon{font-size:2.5rem;margin-bottom:14px;display:block}
+.cat-name{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:600;margin-bottom:6px}
+.cat-desc{color:var(--muted);font-size:.85rem;line-height:1.5}
+.cat-prices{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+.price-tag{padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:600}
+.pt-normal{background:rgba(255,255,255,.07);color:var(--text)}
+.pt-pro{background:rgba(232,184,109,.14);color:var(--gold)}
+
+/* ============ DELIVERY ============ */
+#delivery{background:var(--deep)}
+.del-tabs{display:flex;gap:10px;margin-bottom:40px;flex-wrap:wrap}
+.tab-btn{padding:11px 26px;border-radius:50px;border:2px solid var(--border);background:transparent;color:var(--muted);font-weight:600;cursor:pointer;transition:.3s;font-size:.9rem;font-family:'DM Sans',sans-serif}
+.tab-btn.active{background:var(--grad);color:#0a0612;border-color:transparent}
+.tab-btn:hover:not(.active){border-color:var(--gold);color:var(--gold)}
+.tab-content{display:none}
+.tab-content.active{display:block}
+.demo-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:22px}
+.demo-card{background:var(--card);border-radius:18px;overflow:hidden;border:1px solid var(--border);transition:.3s}
+.demo-card:hover{border-color:var(--gold);transform:translateY(-4px)}
+.demo-thumb{width:100%;height:180px;background:linear-gradient(135deg,var(--card2),rgba(124,58,237,.2));display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;cursor:pointer}
+.play-btn{position:absolute;width:56px;height:56px;border-radius:50%;background:rgba(232,184,109,.9);color:#0a0612;font-size:1.3rem;display:flex;align-items:center;justify-content:center;transition:.3s}
+.demo-thumb:hover .play-btn{transform:scale(1.12);background:var(--gold)}
+.demo-emoji{font-size:3.5rem;opacity:.25}
+.demo-tier-label{position:absolute;top:10px;left:10px;background:rgba(10,6,18,.8);border:1px solid var(--border);padding:3px 9px;border-radius:16px;font-size:.72rem;color:var(--gold);font-weight:600}
+.demo-info{padding:18px}
+.demo-info h4{font-size:1.05rem;font-weight:600;margin-bottom:5px}
+.demo-info p{color:var(--muted);font-size:.83rem;margin-bottom:12px;line-height:1.5}
+.demo-price-row{display:flex;align-items:center;justify-content:space-between}
+.demo-amt{font-size:1.25rem;font-weight:700;color:var(--gold)}
+.order-btn{background:var(--grad);color:#0a0612;border:none;padding:7px 16px;border-radius:18px;font-weight:700;font-size:.82rem;cursor:pointer;transition:.2s;font-family:'DM Sans',sans-serif}
+.order-btn:hover{transform:scale(1.05)}
+.website-comparison{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-top:36px}
+@media(max-width:700px){.website-comparison{grid-template-columns:1fr}}
+.wc-card{border-radius:22px;padding:32px;border:2px solid var(--border);background:var(--card);position:relative;overflow:hidden}
+.wc-card.pro-card{border-color:var(--gold);background:linear-gradient(135deg,rgba(232,184,109,.06),var(--card))}
+.wc-card.pro-card::before{content:'⭐ PRO';position:absolute;top:18px;right:18px;background:var(--grad);color:#0a0612;padding:3px 11px;border-radius:18px;font-size:.72rem;font-weight:700}
+.wc-title{font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:6px}
+.wc-price{font-size:1.9rem;font-weight:700;color:var(--gold);margin-bottom:18px}
+.wc-price span{font-size:.9rem;color:var(--muted);font-weight:400}
+.wc-features{list-style:none;margin-bottom:24px}
+.wc-features li{padding:7px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:.87rem;color:var(--muted);display:flex;align-items:center;gap:9px}
+.wc-features li::before{content:'✓';color:var(--gold);font-weight:700;flex-shrink:0}
+.wc-features li.miss{color:rgba(144,128,176,.35)}
+.wc-features li.miss::before{content:'✕';color:rgba(144,128,176,.3)}
+.wc-btn{width:100%;padding:12px;border-radius:11px;border:none;font-weight:700;font-size:.95rem;cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif}
+.wc-btn-n{background:rgba(255,255,255,.09);color:var(--text);border:1px solid var(--border)}
+.wc-btn-n:hover{background:rgba(255,255,255,.14)}
+.wc-btn-p{background:var(--grad);color:#0a0612}
+.wc-btn-p:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(232,184,109,.3)}
+
+/* ============ CUSTOM ============ */
+#custom{background:linear-gradient(180deg,var(--dark),var(--deep))}
+.custom-box{background:var(--card);border:1px solid var(--border);border-radius:22px;padding:40px;max-width:760px;margin:0 auto}
+.custom-box h3{font-family:'Playfair Display',serif;font-size:1.7rem;margin-bottom:6px}
+.custom-box>p{color:var(--muted);margin-bottom:26px;line-height:1.6}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;margin-bottom:7px;font-size:.83rem;color:var(--gold);font-weight:600;letter-spacing:.5px}
+.form-group label .req{color:var(--rose)}
+.form-group label .opt{color:var(--muted);font-weight:400;font-size:.78rem;text-transform:none;letter-spacing:0}
+.form-group input,.form-group textarea,.form-group select{width:100%;padding:12px 16px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:11px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.92rem;transition:.3s;outline:none}
+.form-group input:focus,.form-group textarea:focus,.form-group select:focus{border-color:var(--gold);background:rgba(232,184,109,.05)}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted)}
+.form-group textarea{height:110px;resize:vertical}
+.form-group select option{background:var(--card)}
+.input-hint{font-size:.77rem;color:var(--muted);margin-top:5px}
+.input-hint.warn{color:var(--warn)}
+.voice-btns{display:flex;gap:10px;flex-wrap:wrap}
+.voice-btn{flex:1;min-width:110px;padding:11px;border-radius:11px;border:1px solid var(--border);background:transparent;color:var(--text);cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;transition:.3s;display:flex;align-items:center;justify-content:center;gap:7px}
+.voice-btn.active,.voice-btn:hover{border-color:var(--gold);background:rgba(232,184,109,.1);color:var(--gold)}
+.custom-total{background:rgba(232,184,109,.08);border:1px solid rgba(232,184,109,.2);border-radius:11px;padding:14px 18px;margin:18px 0;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.custom-total span{color:var(--muted);font-size:.88rem}
+.custom-total strong{font-size:1.4rem;color:var(--gold);font-family:'Playfair Display',serif}
+.media-note{background:rgba(232,184,109,.07);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:12px 16px;font-size:.84rem;color:var(--muted);line-height:1.6;margin-bottom:18px}
+.media-note strong{color:var(--text)}
+
+/* ============ DASHBOARD ============ */
+#dashboard{background:var(--dark)}
+.wish-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:18px;margin-top:28px}
+.wish-item{background:var(--card);border-radius:15px;padding:20px;border:1px solid var(--border);transition:.3s}
+.wish-item:hover{border-color:var(--gold);transform:translateY(-3px)}
+.wi-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px;gap:10px}
+.wi-title{font-weight:600;font-size:.95rem;line-height:1.4}
+.wi-date{font-size:.75rem;color:var(--muted);white-space:nowrap}
+.wi-meta{color:var(--muted);font-size:.82rem;margin-bottom:12px;line-height:1.6}
+.wi-status{display:inline-block;padding:2px 10px;border-radius:12px;font-size:.74rem;font-weight:700;margin-bottom:12px}
+.status-confirmed{background:rgba(76,175,130,.15);color:var(--success);border:1px solid rgba(76,175,130,.25)}
+.status-pending{background:rgba(232,168,77,.15);color:var(--warn);border:1px solid rgba(232,168,77,.25)}
+.wi-actions{display:flex;gap:7px;flex-wrap:wrap}
+.act-btn{padding:5px 13px;border-radius:18px;border:1px solid var(--border);background:transparent;color:var(--text);font-size:.78rem;cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif}
+.act-btn:hover{border-color:var(--gold);color:var(--gold)}
+.act-btn.del:hover{border-color:var(--rose);color:var(--rose)}
+.empty-state{text-align:center;padding:50px 20px;color:var(--muted);grid-column:1/-1}
+.empty-state .esi{font-size:3rem;margin-bottom:14px;opacity:.35}
+
+/* ============ CONTACT ============ */
+#contact{background:var(--deep);border-top:1px solid var(--border)}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr}}
+.contact-links{display:flex;flex-direction:column;gap:12px;margin-top:24px}
+.contact-link{display:flex;align-items:center;gap:13px;text-decoration:none;color:var(--text);padding:13px 18px;background:var(--card);border-radius:13px;border:1px solid var(--border);transition:.3s}
+.contact-link:hover{border-color:var(--gold);transform:translateX(5px)}
+.cl-icon{width:40px;height:40px;border-radius:11px;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0}
+.cl-info small{color:var(--muted);font-size:.76rem}
+.cl-info p{font-weight:600;margin:0;font-size:.9rem}
+
+/* ============ FOOTER ============ */
+footer{padding:24px;text-align:center;color:var(--muted);font-size:.82rem;border-top:1px solid var(--border);background:var(--dark)}
+footer a{color:var(--gold);text-decoration:none}
+
+/* ============ AUTH MODAL ============ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:600;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:.3s}
+.overlay.open{opacity:1;pointer-events:all}
+.modal-box{background:var(--card2);border-radius:26px;padding:40px;max-width:480px;width:100%;border:1px solid var(--border);position:relative;transform:scale(.94);transition:.3s;max-height:90vh;overflow-y:auto}
+.overlay.open .modal-box{transform:scale(1)}
+.modal-box::-webkit-scrollbar{width:3px}
+.modal-close-btn{position:absolute;top:16px;right:16px;background:rgba(255,255,255,.08);border:none;color:var(--text);width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:.3s}
+.modal-close-btn:hover{background:rgba(255,255,255,.15)}
+.auth-tabs{display:flex;gap:0;margin-bottom:28px;background:rgba(255,255,255,.05);border-radius:12px;padding:4px}
+.auth-tab{flex:1;padding:9px;border-radius:9px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;transition:.3s}
+.auth-tab.active{background:var(--grad);color:#0a0612}
+.auth-form-title{font-family:'Playfair Display',serif;font-size:1.7rem;margin-bottom:5px}
+.auth-form-sub{color:var(--muted);font-size:.88rem;margin-bottom:24px;line-height:1.5}
+.auth-divider{text-align:center;color:var(--muted);font-size:.8rem;margin:16px 0;position:relative}
+.auth-divider::before,.auth-divider::after{content:'';position:absolute;top:50%;width:40%;height:1px;background:var(--border)}
+.auth-divider::before{left:0}
+.auth-divider::after{right:0}
+.auth-error{background:rgba(232,93,93,.1);border:1px solid rgba(232,93,93,.25);border-radius:10px;padding:10px 14px;font-size:.85rem;color:var(--error);margin-bottom:14px;display:none}
+.auth-success{background:rgba(76,175,130,.1);border:1px solid rgba(76,175,130,.25);border-radius:10px;padding:10px 14px;font-size:.85rem;color:var(--success);margin-bottom:14px;display:none}
+.submit-btn{width:100%;padding:13px;border-radius:12px;border:none;background:var(--grad);color:#0a0612;font-family:'DM Sans',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:.3s;margin-top:6px}
+.submit-btn:hover{transform:translateY(-2px);box-shadow:0 12px 30px rgba(232,184,109,.3)}
+.forgot-link{text-align:right;margin-top:-10px;margin-bottom:14px}
+.forgot-link a{color:var(--gold);font-size:.82rem;cursor:pointer;text-decoration:none}
+
+/* ============ ORDER MODAL ============ */
+#order-modal .modal-box{max-width:600px}
+.order-steps{display:flex;gap:0;margin-bottom:28px;position:relative}
+.order-step{flex:1;text-align:center;font-size:.78rem;color:var(--muted);font-weight:600;padding-bottom:10px;border-bottom:2px solid var(--border);position:relative;transition:.3s;cursor:default}
+.order-step.active{color:var(--gold);border-color:var(--gold)}
+.order-step.done{color:var(--success);border-color:var(--success)}
+.step-num{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;border:2px solid currentColor;font-size:.72rem;margin-bottom:4px}
+.order-section{display:none}
+.order-section.active{display:block}
+.media-req-box{background:rgba(232,184,109,.07);border:1px solid rgba(232,184,109,.2);border-radius:12px;padding:16px;margin-bottom:18px}
+.media-req-box h4{font-size:.9rem;font-weight:700;margin-bottom:8px;color:var(--gold)}
+.media-req-box p{font-size:.83rem;color:var(--muted);line-height:1.6}
+.media-req-box .req-tag{display:inline-block;background:rgba(232,93,93,.15);color:var(--error);border:1px solid rgba(232,93,93,.25);border-radius:12px;padding:1px 9px;font-size:.72rem;font-weight:700;margin-right:5px}
+.media-req-box .opt-tag{display:inline-block;background:rgba(76,175,130,.12);color:var(--success);border:1px solid rgba(76,175,130,.22);border-radius:12px;padding:1px 9px;font-size:.72rem;font-weight:700;margin-right:5px}
+.order-summary-box{background:rgba(232,184,109,.06);border:1px solid rgba(232,184,109,.18);border-radius:12px;padding:16px;margin-bottom:16px}
+.sum-row{display:flex;justify-content:space-between;padding:5px 0;font-size:.88rem;color:var(--muted);border-bottom:1px solid rgba(255,255,255,.04)}
+.sum-row:last-child{border:none;color:var(--text);font-weight:700;font-size:1rem;padding-top:10px}
+.sum-row.total-row span:last-child{color:var(--gold);font-size:1.15rem}
+.dl-toggle{display:flex;align-items:center;gap:11px;padding:13px;background:rgba(255,255,255,.04);border-radius:11px;margin-bottom:14px;cursor:pointer;border:1px solid var(--border)}
+.dl-toggle:hover{border-color:var(--gold)}
+.dl-toggle input[type=checkbox]{accent-color:var(--gold);width:16px;height:16px;cursor:pointer}
+.dl-toggle label{cursor:pointer;flex:1;font-size:.88rem}
+.dl-toggle .add-price{color:var(--gold);font-weight:700}
+
+/* ============ PAYMENT TABS ============ */
+.pay-tabs{display:flex;gap:0;background:rgba(255,255,255,.05);border-radius:12px;padding:4px;margin-bottom:20px}
+.pay-tab{flex:1;padding:9px;border-radius:9px;border:none;background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-weight:600;font-size:.88rem;cursor:pointer;transition:.3s}
+.pay-tab.active{background:rgba(255,255,255,.1);color:var(--text)}
+.pay-section{display:none}
+.pay-section.active{display:block}
+.upi-display{text-align:center;background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:12px;padding:20px;margin-bottom:14px}
+.upi-id-big{font-size:1.15rem;font-weight:700;color:var(--gold);letter-spacing:1px;margin:6px 0}
+.upi-note{font-size:.8rem;color:var(--muted)}
+.upi-icon{font-size:2.2rem;margin-bottom:6px}
+.card-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.card-grid .form-group{margin-bottom:0}
+.card-preview{background:linear-gradient(135deg,rgba(124,58,237,.4),rgba(232,125,139,.3));border-radius:14px;padding:18px 20px;margin-bottom:18px;position:relative;height:100px;display:flex;flex-direction:column;justify-content:space-between}
+.cp-chip{width:32px;height:22px;border-radius:4px;background:rgba(232,184,109,.6);border:1px solid var(--gold)}
+.cp-num{font-size:.9rem;letter-spacing:4px;color:rgba(255,255,255,.7);font-family:'Cinzel',serif}
+.cp-row{display:flex;justify-content:space-between;align-items:flex-end}
+.cp-name{font-size:.78rem;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:1px}
+.cp-exp{font-size:.78rem;color:rgba(255,255,255,.6)}
+.pay-now-btn{width:100%;padding:13px;border-radius:12px;border:none;background:var(--grad);color:#0a0612;font-family:'DM Sans',sans-serif;font-weight:700;font-size:1rem;cursor:pointer;transition:.3s;margin-top:4px}
+.pay-now-btn:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(232,184,109,.3)}
+.pay-now-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* ============ SUCCESS VIEW ============ */
+.success-view{text-align:center;padding:10px 0}
+.success-icon-big{font-size:4rem;animation:pop .5s cubic-bezier(.68,-.55,.27,1.55) both}
+@keyframes pop{0%{transform:scale(0)}100%{transform:scale(1)}}
+.success-title{font-family:'Playfair Display',serif;font-size:1.7rem;margin:10px 0 6px;color:var(--gold)}
+.share-box{background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:8px;margin:14px 0}
+.share-input{flex:1;background:none;border:none;color:var(--text);font-size:.83rem;outline:none;font-family:'DM Sans',sans-serif;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.copy-btn{background:var(--grad);border:none;color:#0a0612;padding:5px 13px;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer;white-space:nowrap}
+
+/* ============ EMAIL PREVIEW ============ */
+#email-preview-modal .modal-box{max-width:560px}
+.email-preview{background:#fff;border-radius:12px;overflow:hidden;color:#1a1a2e;font-family:'DM Sans',sans-serif}
+.ep-header{background:linear-gradient(135deg,#0a0612,#201b34);padding:28px;text-align:center}
+.ep-logo{font-family:'Cinzel',serif;font-size:1.4rem;font-weight:700;background:linear-gradient(135deg,#e8b86d,#e87d8b);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.ep-body{padding:28px}
+.ep-greeting{font-size:1.05rem;font-weight:600;margin-bottom:12px;color:#1a1a2e}
+.ep-content{font-size:.9rem;color:#555;line-height:1.7;margin-bottom:18px}
+.ep-highlight{background:linear-gradient(135deg,rgba(232,184,109,.1),rgba(232,125,139,.08));border-left:3px solid #e8b86d;border-radius:0 10px 10px 0;padding:12px 16px;margin:14px 0;font-size:.88rem;color:#333}
+.ep-footer{background:#f5f5f5;padding:18px 28px;font-size:.76rem;color:#888;text-align:center;border-top:1px solid #eee}
+
+/* ============ VIDEO PREVIEW ============ */
+#vid-modal .modal-box{max-width:560px}
+.fake-video{width:100%;aspect-ratio:16/9;border-radius:12px;background:linear-gradient(135deg,#1a1528,rgba(124,58,237,.28));display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;position:relative;overflow:hidden;margin:14px 0}
+.fv-emoji{font-size:3.5rem;animation:spin-slow 8s linear infinite;position:absolute;opacity:.25}
+@keyframes spin-slow{from{transform:rotate(0)}to{transform:rotate(360deg)}}
+.fv-bars{display:flex;align-items:flex-end;gap:4px;height:36px;position:relative;z-index:1}
+.fv-bar{width:5px;border-radius:3px;background:var(--grad);animation:eq .8s ease-in-out infinite;height:70%}
+.fv-bar:nth-child(2){animation-delay:.1s;height:60%}
+.fv-bar:nth-child(3){animation-delay:.2s;height:85%}
+.fv-bar:nth-child(4){animation-delay:.3s;height:50%}
+.fv-bar:nth-child(5){animation-delay:.4s;height:90%}
+.fv-bar:nth-child(6){animation-delay:.5s;height:65%}
+@keyframes eq{0%,100%{transform:scaleY(1)}50%{transform:scaleY(.35)}}
+.fv-playing{font-size:.82rem;color:var(--muted);position:relative;z-index:1}
+
+/* ============ CHATBOT ============ */
+.chat-toggle{position:fixed;bottom:26px;right:26px;z-index:490;width:58px;height:58px;border-radius:50%;background:var(--grad);border:none;cursor:pointer;font-size:1.4rem;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 28px rgba(232,184,109,.4);transition:.3s;animation:float-c 3s ease-in-out infinite}
+@keyframes float-c{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.chat-toggle:hover{transform:scale(1.1)!important}
+.chat-window{position:fixed;bottom:96px;right:26px;z-index:489;width:330px;max-height:480px;background:var(--card2);border-radius:22px;border:1px solid var(--border);box-shadow:0 20px 55px rgba(0,0,0,.5);display:flex;flex-direction:column;overflow:hidden;transform:scale(.8) translateY(20px);transform-origin:bottom right;opacity:0;pointer-events:none;transition:.3s}
+.chat-window.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
+.chat-hdr{padding:14px 18px;background:linear-gradient(135deg,rgba(124,58,237,.28),rgba(232,125,139,.18));border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.chat-av{width:34px;height:34px;border-radius:50%;background:var(--grad);display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
+.chat-title-t{font-weight:600;font-size:.9rem}
+.chat-status-t{font-size:.72rem;color:#6ee7a0}
+.chat-x{margin-left:auto;background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem;transition:.2s}
+.chat-x:hover{color:var(--text)}
+.chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;scrollbar-width:thin;scrollbar-color:var(--gold-dark) transparent}
+.msg{max-width:82%;padding:9px 13px;border-radius:13px;font-size:.86rem;line-height:1.5;animation:fadeUp .3s both}
+.msg.bot{background:rgba(255,255,255,.07);border-radius:4px 13px 13px 13px;align-self:flex-start;white-space:pre-line}
+.msg.user{background:var(--grad);color:#0a0612;border-radius:13px 4px 13px 13px;align-self:flex-end;font-weight:500}
+.chat-qr{padding:0 12px 8px;display:flex;gap:7px;flex-wrap:wrap}
+.qr-btn{background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:14px;padding:4px 11px;font-size:.76rem;color:var(--text);cursor:pointer;transition:.3s;font-family:'DM Sans',sans-serif}
+.qr-btn:hover{border-color:var(--gold);color:var(--gold)}
+.chat-in-row{padding:10px;border-top:1px solid var(--border);display:flex;gap:7px}
+.chat-input{flex:1;background:rgba(255,255,255,.06);border:1px solid var(--border);border-radius:11px;padding:9px 13px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:.85rem;outline:none;transition:.3s}
+.chat-input:focus{border-color:var(--gold)}
+.chat-send-btn{background:var(--grad);border:none;width:36px;height:36px;border-radius:9px;cursor:pointer;font-size:.88rem;color:#0a0612;flex-shrink:0;transition:.2s}
+.chat-send-btn:hover{transform:scale(1.06)}
+.typing-ind{display:flex;align-items:center;gap:4px;padding:9px 13px;background:rgba(255,255,255,.07);border-radius:4px 13px 13px 13px;width:fit-content;align-self:flex-start}
+.typing-ind span{width:6px;height:6px;border-radius:50%;background:var(--muted);animation:ty .9s infinite}
+.typing-ind span:nth-child(2){animation-delay:.18s}
+.typing-ind span:nth-child(3){animation-delay:.36s}
+@keyframes ty{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-5px);opacity:1}}
+
+/* ============ TOAST ============ */
+.toast{position:fixed;bottom:100px;right:24px;z-index:900;background:var(--card2);border:1px solid var(--gold);border-radius:11px;padding:11px 18px;font-size:.86rem;color:var(--text);transform:translateY(16px);opacity:0;transition:.3s;pointer-events:none;max-width:280px;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.error-toast{border-color:var(--error)}
+.toast.success-toast{border-color:var(--success)}
+
+/* ============ MISC ============ */
+.divider{height:1px;background:var(--border);margin:20px 0}
+.step-btns{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.step-btns button{padding:10px 22px;border-radius:10px;font-family:'DM Sans',sans-serif;font-weight:600;font-size:.9rem;cursor:pointer;transition:.3s;border:none}
+.btn-back{background:rgba(255,255,255,.07);color:var(--text)}
+.btn-back:hover{background:rgba(255,255,255,.12)}
+.btn-next{background:var(--grad);color:#0a0612}
+.btn-next:hover{transform:translateY(-1px);box-shadow:0 8px 22px rgba(232,184,109,.3)}
+
+/* ============ RESPONSIVE ============ */
+@media(max-width:900px){nav{padding:14px 20px}.nav-links{gap:14px}}
+@media(max-width:640px){.nav-links{display:none}section{padding:70px 18px}.cat-grid{grid-template-columns:1fr 1fr}.chat-window{width:calc(100vw - 40px);right:20px}.card-grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<!-- ====== NAV ====== -->
+<nav id="main-nav">
+  <a class="logo" onclick="smoothScroll('hero')">✨ WishCraft</a>
+  <div class="nav-links">
+    <a onclick="smoothScroll('occasion')">Occasions</a>
+    <a onclick="smoothScroll('delivery')">Packages</a>
+    <a onclick="smoothScroll('custom')">Custom</a>
+    <a onclick="smoothScroll('dashboard')">My Wishes</a>
+  </div>
+  <div class="nav-right" id="nav-right">
+    <button class="nav-cta" id="nav-login-btn" onclick="openAuthModal('login')">Sign In</button>
+    <button class="nav-cta" id="nav-signup-btn" onclick="openAuthModal('signup')" style="background:transparent;color:var(--gold);border:1px solid var(--gold)">Sign Up</button>
+  </div>
+</nav>
+
+<!-- ====== HERO ====== -->
+<section id="hero">
+  <canvas id="particles-canvas"></canvas>
+  <div class="hero-bg"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-content">
+    <div class="hero-badge"><span class="dot"></span>✦ AI-Powered Digital Wishes Platform</div>
+    <h1 class="hero-title">
+      <span class="line1">Make Every Moment</span>
+      <span class="line2">Unforgettable</span>
+    </h1>
+    <p class="hero-sub">Not Just Wishes… It's an Experience. Turn your emotions into breathtaking digital memories that your loved ones will cherish forever.</p>
+    <div class="hero-tags">
+      <span class="hero-tag">🎂 Birthday Wishes</span>
+      <span class="hero-tag">💍 Anniversary Wishes</span>
+      <span class="hero-tag">🎬 Video Delivery</span>
+      <span class="hero-tag">🌐 Mini Website</span>
+      <span class="hero-tag">🤖 AI Personalized</span>
+    </div>
+    <div class="hero-btns">
+      <button class="btn-primary" onclick="smoothScroll('occasion')">✨ Create Your Wish</button>
+      <button class="btn-outline" onclick="smoothScroll('delivery');setTimeout(()=>switchMainTab('website'),400)">🌐 Website Wishes</button>
+    </div>
+  </div>
+  <div class="hero-scroll"><span>Scroll</span><div class="scroll-arrow"></div></div>
+</section>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat"><div class="stat-num" id="cnt1">0</div><div class="stat-label">Wishes Created</div></div>
+    <div class="stat"><div class="stat-num" id="cnt2">0</div><div class="stat-label">Happy Customers</div></div>
+    <div class="stat"><div class="stat-num" id="cnt3">0</div><div class="stat-label">Occasions</div></div>
+    <div class="stat"><div class="stat-num" id="cnt4">0</div><div class="stat-label">Smiles Delivered</div></div>
+  </div>
+</div>
+
+<!-- ====== OCCASION ====== -->
+<section id="occasion">
+  <div class="section-inner">
+    <span class="section-tag">Choose Your Occasion</span>
+    <h2 class="section-title">What Are You <em>Celebrating?</em></h2>
+    <p class="section-sub">Select the perfect occasion and let WishCraft craft something extraordinary that speaks straight to the heart.</p>
+    <div class="occasion-cards">
+      <div class="occasion-card" id="oc-birthday" onclick="selectOccasion('birthday')">
+        <div class="occ-img">🎂</div>
+        <div class="occ-body">
+          <h3>🎂 Birthday</h3>
+          <p>Celebrate the most special day with wishes that make them feel like royalty — heartfelt, hilarious, or absolutely stylish.</p>
+          <div class="badge-row"><span class="badge">Romantic</span><span class="badge">Humorous</span><span class="badge">Mass</span><span class="badge">Stylish</span></div>
+          <button class="sel-btn sel-btn-b">Select Birthday →</button>
+        </div>
+      </div>
+      <div class="occasion-card" id="oc-anniversary" onclick="selectOccasion('anniversary')">
+        <div class="occ-img">💍</div>
+        <div class="occ-body">
+          <h3>💍 Anniversary</h3>
+          <p>Celebrate your love story with wishes as timeless as your bond — crafted to relive every cherished moment together.</p>
+          <div class="badge-row"><span class="badge">Romantic</span><span class="badge">Humorous</span><span class="badge">Sweet</span></div>
+          <button class="sel-btn sel-btn-a">Select Anniversary →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CATEGORIES ====== -->
+<section id="categories">
+  <div class="section-inner">
+    <span class="section-tag">Wish Categories</span>
+    <h2 class="section-title" id="cat-heading">Choose Your <em>Style</em></h2>
+    <p class="section-sub" id="cat-sub">Each category offers a distinct emotional tone crafted to resonate perfectly.</p>
+    <div class="cat-grid" id="cat-grid"></div>
+  </div>
+</section>
+
+<!-- ====== DELIVERY ====== -->
+<section id="delivery">
+  <div class="section-inner">
+    <span class="section-tag">Delivery Mode</span>
+    <h2 class="section-title">How Should We <em>Deliver</em> It?</h2>
+    <p class="section-sub">Two magical ways to share your wish — both crafted to create moments that last a lifetime.</p>
+    <div class="del-tabs">
+      <button class="tab-btn active" id="tab-video-btn" onclick="switchMainTab('video')">🎬 Video Wishes</button>
+      <button class="tab-btn" id="tab-website-btn" onclick="switchMainTab('website')">🌐 Website Wishes</button>
+    </div>
+    <div class="tab-content active" id="tab-video"><div class="demo-grid" id="video-demos"></div></div>
+    <div class="tab-content" id="tab-website">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:10px">Your Wish as a <span style="background:var(--grad);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Mini-Website</span></h3>
+      <p style="color:var(--muted);line-height:1.7;max-width:620px;margin-bottom:28px">Imagine opening a link and being greeted by a world built just for you — music, animations, and a story that celebrates YOU.</p>
+      <div class="website-comparison" id="website-cards"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ====== CUSTOM ====== -->
+<section id="custom">
+  <div class="section-inner">
+    <span class="section-tag">Custom Wish Studio</span>
+    <h2 class="section-title">Your Idea, Our <em>Magic</em></h2>
+    <p class="section-sub">Have something specific in mind? Share your thoughts and our AI will craft a completely personalized wish just for you.</p>
+    <div class="custom-box">
+      <h3>✍️ Create Your Custom Wish</h3>
+      <p>Tell us the story — we'll turn it into something extraordinary.</p>
+      <div class="media-note">
+        <strong>📎 Media Requirements:</strong> Providing your own images and media makes the wish truly personal.<br/>
+        <strong style="color:var(--error)">⚠️ Images (via Google Drive) are MANDATORY</strong> — they form the visual foundation of your wish.<br/>
+        <span style="color:var(--success)">✓ Videos are OPTIONAL</span> — include them if you'd like to add a personal video message.
+      </div>
+      <div class="form-group">
+        <label>RECIPIENT'S NAME <span class="req">*</span></label>
+        <input type="text" id="cust-name" placeholder="e.g. Priya, Rahul, Dadi..." oninput="updateCustomPrice()"/>
+      </div>
+      <div class="form-group">
+        <label>OCCASION <span class="req">*</span></label>
+        <select id="cust-occasion" onchange="updateCustomPrice()">
+          <option value="">Select occasion...</option>
+          <option value="birthday">🎂 Birthday</option>
+          <option value="anniversary">💍 Anniversary</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>YOUR WISH SCRIPT / IDEA</label>
+        <textarea id="cust-script" placeholder="Write your script, key memories, inside jokes, or just share keywords — our AI will weave it into magic..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>DELIVERY TYPE <span class="req">*</span></label>
+        <select id="cust-delivery" onchange="updateCustomPrice()">
+          <option value="">Select type...</option>
+          <option value="video-normal">🎬 Video — Normal</option>
+          <option value="video-pro">🎬 Video — Pro ⭐</option>
+          <option value="website-normal">🌐 Website — Normal</option>
+          <option value="website-pro">🌐 Website — Pro ⭐</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>GOOGLE DRIVE LINK — IMAGES <span class="req">*</span></label>
+        <input type="url" id="cust-drive-images" placeholder="https://drive.google.com/drive/folders/..."/>
+        <div class="input-hint warn">⚠️ Images are mandatory. Share a Google Drive folder with your photos.</div>
+      </div>
+      <div class="form-group">
+        <label>GOOGLE DRIVE LINK — VIDEOS <span class="opt">(Optional)</span></label>
+        <input type="url" id="cust-drive-videos" placeholder="https://drive.google.com/drive/folders/... (optional)"/>
+        <div class="input-hint">Optional: Add personal video clips for a more immersive experience.</div>
+      </div>
+      <div class="form-group">
+        <label>BACKGROUND MUSIC LINK <span class="opt">(Optional)</span></label>
+        <input type="url" id="cust-music" placeholder="YouTube or Google Drive music link..."/>
+        <div class="input-hint">Paste a YouTube video URL or Google Drive audio link for custom background music.</div>
+      </div>
+      <div class="form-group">
+        <label>VOICE WISH <span class="opt">(Optional)</span></label>
+        <div class="voice-btns">
+          <button class="voice-btn active" id="vb-none" onclick="selectVoice('none')">🔇 No Voice</button>
+          <button class="voice-btn" id="vb-male" onclick="selectVoice('male')">👨 Male Voice</button>
+          <button class="voice-btn" id="vb-female" onclick="selectVoice('female')">👩 Female Voice</button>
+        </div>
+      </div>
+      <div class="custom-total">
+        <span>Estimated Total</span>
+        <strong id="cust-total">₹ —</strong>
+      </div>
+      <button class="btn-primary" style="width:100%;padding:14px;font-size:1rem" onclick="generateCustomWish()">🤖 Generate with AI →</button>
+    </div>
+  </div>
+</section>
+
+<!-- ====== DASHBOARD ====== -->
+<section id="dashboard">
+  <div class="section-inner">
+    <span class="section-tag">My Wish Dashboard</span>
+    <h2 class="section-title">Your <em>Wish</em> History</h2>
+    <p class="section-sub">Revisit, re-share, or re-order your previously created wishes. All saved securely to your account.</p>
+    <div class="wish-grid" id="wish-grid"></div>
+  </div>
+</section>
+
+<!-- ====== CONTACT ====== -->
+<section id="contact">
+  <div class="section-inner">
+    <div class="contact-grid">
+      <div>
+        <span class="section-tag">Get In Touch</span>
+        <h2 class="section-title">We're Here to Help <em>You</em> Create Magic</h2>
+        <p style="color:var(--muted);line-height:1.7;margin-bottom:20px">Have questions? Need a custom bulk order? Reach out — we'd love to make your occasion unforgettable.</p>
+        <div class="contact-links">
+          <a href="mailto:support@wishcraft.in" class="contact-link">
+            <div class="cl-icon">📧</div>
+            <div class="cl-info"><small>Email Support</small><p>support@wishcraft.in</p></div>
+          </a>
+          <a href="https://instagram.com/wishcraft.in" target="_blank" class="contact-link">
+            <div class="cl-icon">📸</div>
+            <div class="cl-info"><small>Instagram</small><p>@wishcraft.in</p></div>
+          </a>
+        </div>
+      </div>
+      <div>
+        <div style="background:var(--card);border-radius:22px;padding:32px;border:1px solid var(--border)">
+          <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:6px">Quick Enquiry</h3>
+          <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px">Drop your message and we'll get back within 24 hours.</p>
+          <div class="form-group"><label>NAME</label><input type="text" id="enq-name" placeholder="Your name..."/></div>
+          <div class="form-group"><label>MESSAGE</label><textarea id="enq-msg" placeholder="Your question or requirement..." style="height:90px"></textarea></div>
+          <button class="btn-primary" style="width:100%;padding:12px" onclick="sendEnquiry()">Send Message</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p style="font-family:'Playfair Display',serif;font-size:1.15rem;color:var(--gold);margin-bottom:6px">✨ WishCraft</p>
+  <p>Turn Emotions into Digital Memories &nbsp;|&nbsp; Made with 💛 for every special moment</p>
+  <p style="margin-top:6px">© 2025 WishCraft. All rights reserved &nbsp;|&nbsp; <a href="#">Privacy</a> &nbsp;|&nbsp; <a href="#">Terms</a></p>
+</footer>
+
+<!-- ====== AUTH MODAL ====== -->
+<div class="overlay" id="auth-modal">
+  <div class="modal-box">
+    <button class="modal-close-btn" onclick="closeOverlay('auth-modal')">✕</button>
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="atab-login" onclick="switchAuthTab('login')">Sign In</button>
+      <button class="auth-tab" id="atab-signup" onclick="switchAuthTab('signup')">Sign Up</button>
+    </div>
+    <!-- LOGIN -->
+    <div id="login-form">
+      <div class="auth-form-title">Welcome Back ✨</div>
+      <div class="auth-form-sub">Sign in to your WishCraft account to continue creating magic.</div>
+      <div class="auth-error" id="login-error"></div>
+      <div class="form-group"><label>EMAIL ADDRESS</label><input type="email" id="login-email" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>PASSWORD</label><input type="password" id="login-pass" placeholder="Your password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+      <div class="forgot-link"><a onclick="showForgotMsg()">Forgot password?</a></div>
+      <button class="submit-btn" onclick="doLogin()">Sign In →</button>
+      <div class="auth-divider">or</div>
+      <div style="text-align:center;font-size:.85rem;color:var(--muted)">Don't have an account? <a style="color:var(--gold);cursor:pointer" onclick="switchAuthTab('signup')">Sign up free</a></div>
+    </div>
+    <!-- SIGNUP -->
+    <div id="signup-form" style="display:none">
+      <div class="auth-form-title">Join WishCraft ✨</div>
+      <div class="auth-form-sub">Create your account and start turning emotions into digital memories.</div>
+      <div class="auth-error" id="signup-error"></div>
+      <div class="auth-success" id="signup-success"></div>
+      <div class="form-group"><label>FULL NAME <span style="color:var(--rose)">*</span></label><input type="text" id="signup-name" placeholder="Your full name"/></div>
+      <div class="form-group"><label>EMAIL ADDRESS <span style="color:var(--rose)">*</span></label><input type="email" id="signup-email" placeholder="you@example.com"/></div>
+      <div class="form-group"><label>PHONE NUMBER <span style="color:var(--rose)">*</span></label><input type="tel" id="signup-phone" placeholder="+91 98765 43210"/></div>
+      <div class="form-group"><label>PASSWORD <span style="color:var(--rose)">*</span></label><input type="password" id="signup-pass" placeholder="Min 6 characters"/></div>
+      <div class="form-group"><label>CONFIRM PASSWORD <span style="color:var(--rose)">*</span></label><input type="password" id="signup-pass2" placeholder="Repeat password" onkeydown="if(event.key==='Enter')doSignup()"/></div>
+      <button class="submit-btn" onclick="doSignup()">Create Account →</button>
+      <div class="auth-divider">or</div>
+      <div style="text-align:center;font-size:.85rem;color:var(--muted)">Already have an account? <a style="color:var(--gold);cursor:pointer" onclick="switchAuthTab('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== ORDER MODAL ====== -->
+<div class="overlay" id="order-modal">
+  <div class="modal-box" style="max-width:600px">
+    <button class="modal-close-btn" onclick="closeOverlay('order-modal')">✕</button>
+    <!-- Steps -->
+    <div class="order-steps" id="order-steps">
+      <div class="order-step active" id="step-ind-1"><div class="step-num">1</div>Details</div>
+      <div class="order-step" id="step-ind-2"><div class="step-num">2</div>Media</div>
+      <div class="order-step" id="step-ind-3"><div class="step-num">3</div>Review</div>
+      <div class="order-step" id="step-ind-4"><div class="step-num">4</div>Payment</div>
+    </div>
+    <!-- Step 1: Details -->
+    <div class="order-section active" id="ord-step-1">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin-bottom:6px" id="ord-title">Your Order</h3>
+      <p style="color:var(--muted);font-size:.88rem;margin-bottom:20px" id="ord-subtitle">Fill in recipient details to personalize your wish.</p>
+      <div class="form-group"><label>RECIPIENT'S NAME <span style="color:var(--rose)">*</span></label><input type="text" id="ord-rec-name" placeholder="Who is this wish for?"/></div>
+      <div class="form-group"><label>FROM (YOUR NAME)</label><input type="text" id="ord-from-name" placeholder="Your name (appears in the wish)"/></div>
+      <div class="form-group"><label>PERSONAL MESSAGE <span style="color:var(--muted);font-size:.76rem;font-weight:400;letter-spacing:0">(Optional)</span></label><textarea id="ord-message" style="height:90px" placeholder="Add a personal touch — a note, memory, or inside joke..."></textarea></div>
+      <div class="form-group"><label>VOICE WISH <span style="color:var(--muted);font-size:.76rem;font-weight:400;letter-spacing:0">(Optional)</span></label>
+        <div class="voice-btns">
+          <button class="voice-btn active" id="ord-vb-none" onclick="selectOrderVoice('none')">🔇 No Voice</button>
+          <button class="voice-btn" id="ord-vb-male" onclick="selectOrderVoice('male')">👨 Male</button>
+          <button class="voice-btn" id="ord-vb-female" onclick="selectOrderVoice('female')">👩 Female</button>
+        </div>
+      </div>
+      <div class="step-btns"><button class="btn-next" onclick="goOrderStep(2)">Next: Media →</button></div>
+    </div>
+    <!-- Step 2: Media -->
+    <div class="order-section" id="ord-step-2">
+      <div class="media-req-box">
+        <h4>📎 Media Submission Guide</h4>
+        <p>
+          <span class="req-tag">MANDATORY</span> <strong>Images</strong> — Provide a Google Drive folder link containing your photos. These are essential to create your personalized wish.<br/><br/>
+          <span class="opt-tag">OPTIONAL</span> <strong>Videos</strong> — Include personal video clips for an even more immersive experience.<br/><br/>
+          Make sure your Drive folder is shared with <strong style="color:var(--gold)">anyone with the link (viewer access)</strong>.
+        </p>
+      </div>
+      <div class="form-group">
+        <label>GOOGLE DRIVE — IMAGES FOLDER <span style="color:var(--rose)">*</span></label>
+        <input type="url" id="ord-drive-images" placeholder="https://drive.google.com/drive/folders/..."/>
+        <div class="input-hint warn">⚠️ Required — Share a Google Drive folder link with your photos</div>
+      </div>
+      <div class="form-group">
+        <label>GOOGLE DRIVE — VIDEOS <span style="color:var(--muted);font-size:.76rem;font-weight:400;letter-spacing:0">(Optional)</span></label>
+        <input type="url" id="ord-drive-videos" placeholder="https://drive.google.com/drive/folders/... (optional)"/>
+        <div class="input-hint">Optional: Add a Google Drive link with personal video clips</div>
+      </div>
+      <div class="form-group">
+        <label>BACKGROUND MUSIC <span style="color:var(--muted);font-size:.76rem;font-weight:400;letter-spacing:0">(Optional)</span></label>
+        <input type="url" id="ord-music" placeholder="YouTube URL or Google Drive audio link..."/>
+        <div class="input-hint">YouTube video URL or Google Drive audio file link for background music</div>
+      </div>
+      <div class="step-btns">
+        <button class="btn-back" onclick="goOrderStep(1)">← Back</button>
+        <button class="btn-next" onclick="goOrderStep(3)">Next: Review →</button>
+      </div>
+    </div>
+    <!-- Step 3: Review -->
+    <div class="order-section" id="ord-step-3">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:16px">Order Summary</h3>
+      <div class="order-summary-box" id="ord-summary-box"></div>
+      <div class="dl-toggle" onclick="toggleDownload()">
+        <input type="checkbox" id="dl-check"/>
+        <label for="dl-check">📥 Add Download Option <span class="add-price">+₹49</span> — Keep your wish forever</label>
+      </div>
+      <div class="step-btns">
+        <button class="btn-back" onclick="goOrderStep(2)">← Back</button>
+        <button class="btn-next" onclick="goOrderStep(4)">Proceed to Payment →</button>
+      </div>
+    </div>
+    <!-- Step 4: Payment -->
+    <div class="order-section" id="ord-step-4">
+      <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;margin-bottom:6px">Secure Payment</h3>
+      <p style="color:var(--muted);font-size:.85rem;margin-bottom:18px">Total: <strong style="color:var(--gold);font-size:1.1rem">₹<span id="pay-grand-total">0</span></strong></p>
+      <div class="pay-tabs">
+        <button class="pay-tab active" onclick="switchPayTab('upi',this)">📱 UPI</button>
+        <button class="pay-tab" onclick="switchPayTab('card',this)">💳 Credit / Debit Card</button>
+      </div>
+      <!-- UPI -->
+      <div class="pay-section active" id="pay-upi">
+        <div class="upi-display">
+          <div class="upi-icon">📱</div>
+          <div style="color:var(--muted);font-size:.82rem">Pay via UPI to</div>
+          <div class="upi-id-big">wishcraft@paytm</div>
+          <div class="upi-note">Also accepts: PhonePe, Google Pay, BHIM, Paytm</div>
+        </div>
+        <div class="form-group">
+          <label>YOUR UPI ID (for confirmation)</label>
+          <input type="text" id="upi-id-input" placeholder="yourname@upi"/>
+        </div>
+        <div class="form-group">
+          <label>UTR / TRANSACTION ID <span style="color:var(--rose)">*</span></label>
+          <input type="text" id="upi-txn" placeholder="Enter 12-digit UTR number after payment"/>
+          <div class="input-hint">Complete UPI payment first, then enter the transaction ID here</div>
+        </div>
+        <button class="pay-now-btn" onclick="processPayment('upi')">✓ Confirm UPI Payment</button>
+      </div>
+      <!-- CARD -->
+      <div class="pay-section" id="pay-card">
+        <div class="card-preview" id="card-preview">
+          <div class="cp-chip"></div>
+          <div class="cp-num" id="cp-num">•••• •••• •••• ••••</div>
+          <div class="cp-row">
+            <div class="cp-name" id="cp-name">CARD HOLDER</div>
+            <div class="cp-exp" id="cp-exp">MM/YY</div>
+          </div>
+        </div>
+        <div class="form-group"><label>CARD HOLDER NAME <span style="color:var(--rose)">*</span></label><input type="text" id="card-name" placeholder="As on card" oninput="document.getElementById('cp-name').textContent=this.value.toUpperCase()||'CARD HOLDER'"/></div>
+        <div class="form-group"><label>CARD NUMBER <span style="color:var(--rose)">*</span></label><input type="text" id="card-num" placeholder="1234 5678 9012 3456" maxlength="19" oninput="formatCardNum(this)"/></div>
+        <div class="card-grid">
+          <div class="form-group"><label>EXPIRY <span style="color:var(--rose)">*</span></label><input type="text" id="card-exp" placeholder="MM/YY" maxlength="5" oninput="formatExpiry(this)"/></div>
+          <div class="form-group"><label>CVV <span style="color:var(--rose)">*</span></label><input type="password" id="card-cvv" placeholder="•••" maxlength="3"/></div>
+        </div>
+        <button class="pay-now-btn" onclick="processPayment('card')">🔒 Pay Securely ₹<span id="card-pay-amt">0</span></button>
+      </div>
+      <div class="step-btns" style="margin-top:10px"><button class="btn-back" onclick="goOrderStep(3)">← Back</button></div>
+    </div>
+    <!-- Success -->
+    <div class="order-section" id="ord-step-success">
+      <div class="success-view">
+        <div class="success-icon-big">🎉</div>
+        <div class="success-title">Order Confirmed!</div>
+        <p style="color:var(--muted);font-size:.88rem;margin-bottom:4px">Your wish is being crafted with love. Check your email for confirmation.</p>
+        <p style="color:var(--muted);font-size:.82rem;margin-bottom:14px">Share this unique link with your loved one:</p>
+        <div class="share-box"><input class="share-input" id="success-link" readonly/><button class="copy-btn" onclick="copyLink()">Copy</button></div>
+        <button class="btn-primary" style="width:100%;margin-top:10px" onclick="closeOverlay('order-modal');renderDashboard()">🏠 Back to WishCraft</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ====== VIDEO PREVIEW MODAL ====== -->
+<div class="overlay" id="vid-modal">
+  <div class="modal-box" style="max-width:540px">
+    <button class="modal-close-btn" onclick="closeOverlay('vid-modal')">✕</button>
+    <h3 style="font-family:'Playfair Display',serif;font-size:1.5rem" id="vid-modal-title">Preview</h3>
+    <p style="color:var(--muted);font-size:.85rem" id="vid-modal-sub"></p>
+    <div class="fake-video">
+      <span class="fv-emoji" id="vid-emoji">🎂</span>
+      <div class="fv-bars"><div class="fv-bar"></div><div class="fv-bar"></div><div class="fv-bar"></div><div class="fv-bar"></div><div class="fv-bar"></div><div class="fv-bar"></div></div>
+      <div class="fv-playing">🎬 Demo Preview Playing...</div>
+    </div>
+    <button class="btn-primary" id="vid-order-btn" style="width:100%;padding:12px">Order This Wish →</button>
+    <button class="btn-outline" style="width:100%;padding:11px;margin-top:10px" onclick="closeOverlay('vid-modal')">Close Preview</button>
+  </div>
+</div>
+
+<!-- ====== EMAIL PREVIEW MODAL ====== -->
+<div class="overlay" id="email-preview-modal">
+  <div class="modal-box" style="max-width:560px;padding:0;background:transparent;border:none">
+    <button class="modal-close-btn" style="position:absolute;top:-44px;right:0;background:rgba(255,255,255,.15)" onclick="closeOverlay('email-preview-modal')">✕</button>
+    <div class="email-preview" id="email-preview-content"></div>
+  </div>
+</div>
+
+<!-- ====== CHATBOT ====== -->
+<button class="chat-toggle" onclick="toggleChat()">🤖</button>
+<div class="chat-window" id="chat-window">
+  <div class="chat-hdr">
+    <div class="chat-av">✨</div>
+    <div><div class="chat-title-t">WishBot</div><div class="chat-status-t">● Online — Ready to help</div></div>
+    <button class="chat-x" onclick="toggleChat()">✕</button>
+  </div>
+  <div class="chat-msgs" id="chat-msgs"></div>
+  <div class="chat-qr" id="chat-qr"></div>
+  <div class="chat-in-row">
+    <input class="chat-input" id="chat-input" placeholder="Ask me anything..." onkeydown="if(event.key==='Enter')sendChat()"/>
+    <button class="chat-send-btn" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+/* ══════════════════════════════════════════
+   DATA
+══════════════════════════════════════════ */
+const DATA={
+  birthday:{
+    label:'Birthday',emoji:'🎂',
+    categories:[
+      {id:'romantic',name:'Romantic',icon:'💕',desc:'Deep, heartfelt wishes that celebrate a special bond with warmth and tenderness.'},
+      {id:'humorous',name:'Humorous',icon:'😂',desc:'Hilarious wishes that bring laughter and unforgettable memories to the celebration.'},
+      {id:'mass',name:'Mass',icon:'🎉',desc:'High-energy, crowd-pleasing wishes perfect for big celebrations and group moments.'},
+      {id:'stylish',name:'Stylish',icon:'💅',desc:'Trendy, aesthetic wishes for fashion-forward souls who love looking premium.'}
+    ],
+    videoPrice:{normal:199,pro:259},
+    websitePrice:{normal:99,pro:149}
+  },
+  anniversary:{
+    label:'Anniversary',emoji:'💍',
+    categories:[
+      {id:'romantic',name:'Romantic',icon:'💑',desc:'Deeply emotional wishes that beautifully celebrate a love story through time.'},
+      {id:'humorous',name:'Humorous',icon:'😄',desc:'Funny, lighthearted wishes capturing the playful side of a lasting relationship.'},
+      {id:'sweet',name:'Sweet',icon:'🍯',desc:'Gentle, tender wishes that feel like a warm hug — perfect for togetherness.'}
+    ],
+    videoPrice:{normal:239,pro:299},
+    websitePrice:{normal:129,pro:179}
+  }
+};
+
+const customPricing={
+  'video-normal':{birthday:199,anniversary:239},
+  'video-pro':{birthday:259,anniversary:299},
+  'website-normal':{birthday:99,anniversary:129},
+  'website-pro':{birthday:149,anniversary:179}
+};
+
+/* ══════════════════════════════════════════
+   STATE
+══════════════════════════════════════════ */
+let appState={
+  occasion:'birthday',
+  category:null,
+  voice:'none',
+  orderVoice:'none',
+  downloadAdd:false,
+  currentOrder:{},
+  orderStep:1
+};
+
+/* ══════════════════════════════════════════
+   AUTH — localStorage
+══════════════════════════════════════════ */
+function getUsers(){return JSON.parse(localStorage.getItem('wc_users')||'[]')}
+function saveUsers(u){localStorage.setItem('wc_users',JSON.stringify(u))}
+function getCurrentUser(){const s=localStorage.getItem('wc_session');return s?JSON.parse(s):null}
+function setSession(u){localStorage.setItem('wc_session',JSON.stringify(u))}
+function clearSession(){localStorage.removeItem('wc_session')}
+
+function openAuthModal(tab='login'){
+  switchAuthTab(tab);
+  openOverlay('auth-modal');
+}
+
+function switchAuthTab(tab){
+  document.getElementById('login-form').style.display=tab==='login'?'':'none';
+  document.getElementById('signup-form').style.display=tab==='signup'?'':'none';
+  document.getElementById('atab-login').classList.toggle('active',tab==='login');
+  document.getElementById('atab-signup').classList.toggle('active',tab==='signup');
+}
+
+function doLogin(){
+  const email=document.getElementById('login-email').value.trim().toLowerCase();
+  const pass=document.getElementById('login-pass').value;
+  const errEl=document.getElementById('login-error');
+  errEl.style.display='none';
+  if(!email||!pass){showAuthError('login','Please fill in all fields.');return;}
+  const users=getUsers();
+  const user=users.find(u=>u.email===email&&u.password===pass);
+  if(!user){showAuthError('login','Invalid email or password. Please try again.');return;}
+  setSession({name:user.name,email:user.email,phone:user.phone});
+  closeOverlay('auth-modal');
+  updateNavForAuth();
+  renderDashboard();
+  showToast('👋 Welcome back, '+user.name.split(' ')[0]+'!','success');
+  // Show login email simulation
+  setTimeout(()=>showEmailPreview('login',user),600);
+}
+
+function doSignup(){
+  const name=document.getElementById('signup-name').value.trim();
+  const email=document.getElementById('signup-email').value.trim().toLowerCase();
+  const phone=document.getElementById('signup-phone').value.trim();
+  const pass=document.getElementById('signup-pass').value;
+  const pass2=document.getElementById('signup-pass2').value;
+  const errEl=document.getElementById('signup-error');
+  const sucEl=document.getElementById('signup-success');
+  errEl.style.display='none';sucEl.style.display='none';
+  if(!name||!email||!phone||!pass||!pass2){showAuthError('signup','Please fill in all required fields.');return;}
+  if(pass.length<6){showAuthError('signup','Password must be at least 6 characters.');return;}
+  if(pass!==pass2){showAuthError('signup','Passwords do not match.');return;}
+  if(!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){showAuthError('signup','Please enter a valid email address.');return;}
+  const users=getUsers();
+  if(users.find(u=>u.email===email)){showAuthError('signup','This email is already registered. Please sign in.');return;}
+  const newUser={name,email,phone,password:pass,createdAt:new Date().toISOString()};
+  users.push(newUser);
+  saveUsers(users);
+  setSession({name,email,phone});
+  sucEl.textContent='Account created successfully! Welcome to WishCraft ✨';
+  sucEl.style.display='block';
+  setTimeout(()=>{
+    closeOverlay('auth-modal');
+    updateNavForAuth();
+    renderDashboard();
+    showToast('🎉 Welcome to WishCraft, '+name.split(' ')[0]+'!','success');
+    setTimeout(()=>showEmailPreview('welcome',newUser),600);
+  },1400);
+}
+
+function showAuthError(form,msg){
+  const el=document.getElementById(form+'-error');
+  el.textContent=msg;el.style.display='block';
+}
+
+function doLogout(){
+  clearSession();
+  updateNavForAuth();
+  renderDashboard();
+  showToast('You have been signed out.','');
+}
+
+function updateNavForAuth(){
+  const user=getCurrentUser();
+  const nr=document.getElementById('nav-right');
+  if(user){
+    nr.innerHTML=`
+      <div class="nav-user" onclick="smoothScroll('dashboard')">
+        <div class="nav-avatar">${user.name.charAt(0).toUpperCase()}</div>
+        <span class="nav-username">${user.name.split(' ')[0]}</span>
+      </div>
+      <button class="nav-cta" style="background:transparent;color:var(--muted);border:1px solid var(--border)" onclick="doLogout()">Sign Out</button>`;
+  }else{
+    nr.innerHTML=`
+      <button class="nav-cta" id="nav-login-btn" onclick="openAuthModal('login')">Sign In</button>
+      <button class="nav-cta" id="nav-signup-btn" onclick="openAuthModal('signup')" style="background:transparent;color:var(--gold);border:1px solid var(--gold)">Sign Up</button>`;
+  }
+}
+
+/* ══════════════════════════════════════════
+   EMAIL PREVIEW SIMULATION
+══════════════════════════════════════════ */
+function showEmailPreview(type,data){
+  let subject='',body='',highlight='';
+  const name=data.name||'Valued Customer';
+  const date=new Date().toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'});
+  if(type==='welcome'){
+    subject='Welcome to WishCraft ✨ — Account Successfully Created';
+    body=`Dear ${name},\n\nWe're thrilled to have you join the WishCraft family! 🎉\n\nYour account has been successfully created. You can now start creating breathtaking personalized wishes for your loved ones — from cinematic birthday videos to immersive anniversary mini-websites.\n\nExplore our range of packages and let us help you turn every emotion into a digital memory.`;
+    highlight=`Account Email: ${data.email}\nMember Since: ${date}\nStatus: Active & Verified ✓`;
+  }else if(type==='booking'){
+    subject=`WishCraft Order Confirmed ✓ — Order #${data.orderId}`;
+    body=`Dear ${name},\n\nThank you for choosing WishCraft! Your order has been confirmed and our team is already crafting your personalized wish. ✨\n\nWe'll begin working on your wish immediately and you'll receive your delivery link within the promised timeframe.`;
+    highlight=`Order ID: ${data.orderId}\nWish Type: ${data.wishName}\nAmount Paid: ₹${data.price}\nStatus: Confirmed ✓\nDelivery Link: ${data.link}`;
+  }else if(type==='pending'){
+    subject='⚠️ WishCraft — Payment Pending for Your Order';
+    body=`Dear ${name},\n\nWe noticed that your order setup is complete but the payment step hasn't been finalized yet.\n\nYour selected wish is reserved for you. Please complete the payment within the next 24 hours to secure your order. After that, your reservation may be released.`;
+    highlight=`Wish Selected: ${data.wishName||'Custom Wish'}\nEstimated Amount: ₹${data.price||'—'}\nStatus: Awaiting Payment ⏳\nAction Required: Complete Payment`;
+  }else if(type==='failure'){
+    subject='❌ WishCraft — Payment Unsuccessful';
+    body=`Dear ${name},\n\nUnfortunately, your payment could not be processed at this time. This can happen due to insufficient balance, incorrect details, or a temporary bank issue.\n\nPlease don't worry — your order details have been saved. You can retry the payment or use a different payment method.`;
+    highlight=`Order Reference: ${data.orderId||'—'}\nAmount: ₹${data.price||'—'}\nStatus: Payment Failed ✕\nAction: Please retry payment`;
+  }else if(type==='login'){
+    subject='WishCraft — New Sign In Detected';
+    body=`Dear ${name},\n\nA new sign-in to your WishCraft account was just detected. If this was you, no action is needed.\n\nIf you didn't sign in, please change your password immediately.`;
+    highlight=`Sign-in Time: ${new Date().toLocaleString('en-IN')}\nDevice: Web Browser\nStatus: Successful ✓`;
+  }
+  const html=`
+    <div class="ep-header">
+      <div class="ep-logo">✨ WishCraft</div>
+      <div style="color:rgba(255,255,255,.5);font-size:.78rem;margin-top:6px">${subject}</div>
+    </div>
+    <div class="ep-body">
+      <div style="font-size:.75rem;color:#999;margin-bottom:16px">To: ${data.email||'user@example.com'} &nbsp;|&nbsp; ${date}</div>
+      <div class="ep-greeting">Dear ${name},</div>
+      <div class="ep-content">${body.replace(/\n/g,'<br/>')}</div>
+      <div class="ep-highlight" style="white-space:pre-line">${highlight}</div>
+      <div class="ep-content">Warm regards,<br/><strong>The WishCraft Team</strong><br/>support@wishcraft.in</div>
+    </div>
+    <div class="ep-footer">
+      WishCraft — Turn Emotions into Digital Memories<br/>
+      © 2025 WishCraft. All rights reserved.<br/><br/>
+      <em>This is an automated message, please do not reply to this email.<br/>
+      For support, contact us at support@wishcraft.in</em>
+    </div>`;
+  document.getElementById('email-preview-content').innerHTML=html;
+  openOverlay('email-preview-modal');
+  // Save to email log
+  const log=JSON.parse(localStorage.getItem('wc_email_log')||'[]');
+  log.unshift({type,to:data.email,subject,time:new Date().toISOString()});
+  localStorage.setItem('wc_email_log',JSON.stringify(log.slice(0,50)));
+}
+
+/* ══════════════════════════════════════════
+   OCCASIONS & CATEGORIES
+══════════════════════════════════════════ */
+function selectOccasion(occ){
+  appState.occasion=occ;
+  document.querySelectorAll('.occasion-card').forEach(c=>c.classList.remove('active'));
+  document.getElementById('oc-'+occ).classList.add('active');
+  renderCategories(occ);
+  renderVideoDemos(occ);
+  renderWebsiteCards(occ);
+  smoothScroll('categories');
+  showToast(`${DATA[occ].emoji} ${DATA[occ].label} selected! Choose your style.`,'');
+}
+
+function renderCategories(occ){
+  const d=DATA[occ];
+  document.getElementById('cat-heading').innerHTML=`Choose Your <em>${d.label}</em> Style`;
+  document.getElementById('cat-sub').textContent=`Each category offers a distinct emotional tone crafted for the perfect ${d.label.toLowerCase()} wish.`;
+  document.getElementById('cat-grid').innerHTML=d.categories.map(c=>`
+    <div class="cat-card" id="cat-${c.id}" onclick="selectCategory('${c.id}')">
+      <span class="cat-icon">${c.icon}</span>
+      <div class="cat-name">${c.name}</div>
+      <div class="cat-desc">${c.desc}</div>
+      <div class="cat-prices">
+        <span class="price-tag pt-normal">Video ₹${d.videoPrice.normal}</span>
+        <span class="price-tag pt-pro">Pro ₹${d.videoPrice.pro} ⭐</span>
+      </div>
+    </div>`).join('');
+}
+
+function selectCategory(id){
+  appState.category=id;
+  document.querySelectorAll('.cat-card').forEach(c=>c.classList.remove('active'));
+  const el=document.getElementById('cat-'+id);
+  if(el)el.classList.add('active');
+  showToast(`✓ Category selected! Scroll down to choose delivery mode.`,'');
+  smoothScroll('delivery');
+}
+
+/* ══════════════════════════════════════════
+   VIDEO DEMOS
+══════════════════════════════════════════ */
+function renderVideoDemos(occ){
+  const d=DATA[occ];
+  const demos=[
+    {label:'Normal',tier:'normal',emoji:d.emoji,
+     desc:`Beautifully produced ${d.label} video with smooth transitions, ambient music, and heartfelt visuals. 30-60 seconds.`,
+     price:d.videoPrice.normal},
+    {label:'Pro ⭐',tier:'pro',emoji:'✨',
+     desc:`Cinematic ${d.label} video with 3D visuals, motion graphics, voice narration, and premium production. 60-90 seconds.`,
+     price:d.videoPrice.pro}
+  ];
+  document.getElementById('video-demos').innerHTML=demos.map(dm=>`
+    <div class="demo-card">
+      <div class="demo-thumb" onclick="openVideoPreview('${dm.tier}','${d.label} — ${dm.label}','${dm.emoji}',${dm.price})">
+        <span class="demo-emoji">${dm.emoji}</span>
+        <div class="play-btn">▶</div>
+        <div class="demo-tier-label">${dm.label}</div>
+      </div>
+      <div class="demo-info">
+        <h4>${d.label} Wish — ${dm.label}</h4>
+        <p>${dm.desc}</p>
+        <div class="demo-price-row">
+          <span class="demo-amt">₹${dm.price}</span>
+          <button class="order-btn" onclick="initiateOrder('${d.label} Video ${dm.label}',${dm.price},'${dm.tier}','video','${d.emoji}')">Order Now</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+/* ══════════════════════════════════════════
+   WEBSITE CARDS
+══════════════════════════════════════════ */
+function renderWebsiteCards(occ){
+  const d=DATA[occ];
+  const nF=[
+    {t:'Countdown Timer',ok:true},{t:'Background Music',ok:true},{t:'Simple Animations & Confetti',ok:true},
+    {t:'Clean Static Layout',ok:true},{t:'Basic Transitions',ok:true},
+    {t:'3D Visuals & Parallax',ok:false},{t:'Cinematic Animated Intro',ok:false},{t:'Interactive Click Surprises',ok:false}
+  ];
+  const pF=[
+    {t:'Cinematic Animated Intro',ok:true},{t:'Dynamic Storytelling',ok:true},{t:'Advanced UI/UX Animations',ok:true},
+    {t:'Smooth Parallax Effects',ok:true},{t:'3D Visual Elements',ok:true},{t:'Interactive Click Surprises',ok:true},
+    {t:'Personalized Name Animations',ok:true},{t:'Fully Responsive Premium Design',ok:true}
+  ];
+  const card=(title,tier,price,features,isPro)=>`
+    <div class="wc-card ${isPro?'pro-card':''}">
+      <div class="wc-title">${title}</div>
+      <div class="wc-price">₹${price} <span>/ one-time</span></div>
+      <ul class="wc-features">${features.map(f=>`<li class="${f.ok?'':'miss'}">${f.t}</li>`).join('')}</ul>
+      <button class="wc-btn ${isPro?'wc-btn-p':'wc-btn-n'}" onclick="initiateOrder('${d.label} Website ${title}',${price},'${tier}','website','${d.emoji}')">
+        ${isPro?'✨ Get Pro Experience':'Get Normal Version'}
+      </button>
+    </div>`;
+  document.getElementById('website-cards').innerHTML=
+    card('Normal','normal',d.websitePrice.normal,nF,false)+
+    card('Pro','pro',d.websitePrice.pro,pF,true);
+}
+
+/* ══════════════════════════════════════════
+   TAB SWITCHER
+══════════════════════════════════════════ */
+function switchMainTab(id){
+  ['video','website'].forEach(t=>{
+    document.getElementById('tab-'+t).classList.toggle('active',t===id);
+    document.getElementById('tab-'+t+'-btn').classList.toggle('active',t===id);
+  });
+}
+
+/* ══════════════════════════════════════════
+   VIDEO PREVIEW
+══════════════════════════════════════════ */
+function openVideoPreview(tier,title,emoji,price){
+  document.getElementById('vid-modal-title').textContent='🎬 '+title;
+  document.getElementById('vid-modal-sub').textContent=tier==='pro'?'Premium cinematic production — 60-90 seconds':'High-quality video wish — 30-60 seconds';
+  document.getElementById('vid-emoji').textContent=emoji;
+  document.getElementById('vid-order-btn').onclick=()=>{closeOverlay('vid-modal');initiateOrder(title,price,tier,'video',emoji)};
+  openOverlay('vid-modal');
+}
+
+/* ══════════════════════════════════════════
+   ORDER FLOW
+══════════════════════════════════════════ */
+function initiateOrder(wishName,price,tier,type,emoji){
+  const user=getCurrentUser();
+  if(!user){
+    showToast('Please sign in to place an order.','error');
+    setTimeout(()=>openAuthModal('login'),400);
+    return;
+  }
+  appState.currentOrder={wishName,price,tier,type,emoji:emoji||'✨',downloadAdd:false};
+  appState.downloadAdd=false;
+  appState.orderVoice='none';
+  document.getElementById('dl-check').checked=false;
+  // Reset voice btns
+  ['none','male','female'].forEach(v=>{
+    const el=document.getElementById('ord-vb-'+v);
+    if(el)el.classList.toggle('active',v==='none');
+  });
+  // Reset fields
+  ['ord-rec-name','ord-from-name','ord-message','ord-drive-images','ord-drive-videos','ord-music','upi-id-input','upi-txn','card-name','card-num','card-exp','card-cvv'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.value='';
+  });
+  document.getElementById('cp-num').textContent='•••• •••• •••• ••••';
+  document.getElementById('cp-name').textContent='CARD HOLDER';
+  document.getElementById('cp-exp').textContent='MM/YY';
+  document.getElementById('ord-title').textContent=wishName;
+  document.getElementById('ord-subtitle').textContent=`${type==='video'?'🎬 Video':'🌐 Website'} — ${tier.toUpperCase()} • ₹${price}`;
+  // Hide all sections, show step 1
+  document.querySelectorAll('.order-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ord-step-1').classList.add('active');
+  // Reset step indicators
+  for(let i=1;i<=4;i++){
+    const si=document.getElementById('step-ind-'+i);
+    if(si){si.classList.remove('active','done');if(i===1)si.classList.add('active');}
+  }
+  document.getElementById('order-steps').style.display='flex';
+  openOverlay('order-modal');
+  // Send pending email after a delay (simulate user being on step 2+)
+  setTimeout(()=>{
+    const user=getCurrentUser();
+    if(user&&appState.currentOrder.wishName===wishName){
+      // Only show pending reminder if still on the modal
+      const modal=document.getElementById('order-modal');
+      if(modal.classList.contains('open')){
+        // Store as pending reminder event
+        const pdata={...user,wishName,price};
+        logEmailEvent('pending',pdata);
+      }
+    }
+  },30000);
+}
+
+function goOrderStep(n){
+  if(n===3){
+    // Validate step 2
+    const driveImg=document.getElementById('ord-drive-images').value.trim();
+    if(!driveImg){showToast('⚠️ Google Drive images link is required.','error');return;}
+  }
+  if(n===4){renderPaySummary();}
+  // Update indicators
+  for(let i=1;i<=4;i++){
+    const si=document.getElementById('step-ind-'+i);
+    if(!si)continue;
+    si.classList.remove('active','done');
+    if(i<n)si.classList.add('done');
+    else if(i===n)si.classList.add('active');
+  }
+  document.querySelectorAll('.order-section').forEach(s=>s.classList.remove('active'));
+  const target=document.getElementById('ord-step-'+n);
+  if(target)target.classList.add('active');
+  appState.orderStep=n;
+}
+
+function renderPaySummary(){
+  const o=appState.currentOrder;
+  const base=o.price;
+  const dl=appState.downloadAdd?49:0;
+  const total=base+dl;
+  document.getElementById('ord-summary-box').innerHTML=`
+    <div class="sum-row"><span>Wish Package</span><span>${o.wishName}</span></div>
+    <div class="sum-row"><span>Type</span><span>${o.type==='video'?'🎬 Video':'🌐 Website'} — ${o.tier.toUpperCase()}</span></div>
+    <div class="sum-row"><span>Recipient</span><span>${document.getElementById('ord-rec-name').value||'—'}</span></div>
+    ${appState.downloadAdd?`<div class="sum-row"><span>Download Add-on</span><span>₹49</span></div>`:''}
+    <div class="sum-row total-row"><span>Total</span><span>₹${total}</span></div>`;
+  document.getElementById('pay-grand-total').textContent=total;
+  document.getElementById('card-pay-amt').textContent=total;
+}
+
+function toggleDownload(){
+  appState.downloadAdd=!appState.downloadAdd;
+  document.getElementById('dl-check').checked=appState.downloadAdd;
+  renderPaySummary();
+}
+
+function selectOrderVoice(v){
+  appState.orderVoice=v;
+  ['none','male','female'].forEach(x=>{
+    const el=document.getElementById('ord-vb-'+x);
+    if(el)el.classList.toggle('active',x===v);
+  });
+}
+
+function switchPayTab(id,btn){
+  document.querySelectorAll('.pay-section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.pay-tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('pay-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function formatCardNum(el){
+  let v=el.value.replace(/\D/g,'').substring(0,16);
+  v=v.replace(/(.{4})/g,'$1 ').trim();
+  el.value=v;
+  document.getElementById('cp-num').textContent=v||'•••• •••• •••• ••••';
+}
+function formatExpiry(el){
+  let v=el.value.replace(/\D/g,'').substring(0,4);
+  if(v.length>2)v=v.substring(0,2)+'/'+v.substring(2);
+  el.value=v;
+  document.getElementById('cp-exp').textContent=v||'MM/YY';
+}
+
+function processPayment(method){
+  const user=getCurrentUser();
+  if(!user){showToast('Session error. Please sign in again.','error');return;}
+  const o=appState.currentOrder;
+  const total=o.price+(appState.downloadAdd?49:0);
+  // Validate
+  if(method==='upi'){
+    const txn=document.getElementById('upi-txn').value.trim();
+    if(!txn){showToast('⚠️ Please enter your UTR / Transaction ID.','error');return;}
+  }else{
+    const cn=document.getElementById('card-name').value.trim();
+    const num=document.getElementById('card-num').value.replace(/\s/g,'');
+    const exp=document.getElementById('card-exp').value.trim();
+    const cvv=document.getElementById('card-cvv').value.trim();
+    if(!cn||num.length<16||!exp||cvv.length<3){showToast('⚠️ Please fill in all card details correctly.','error');return;}
+    // Simulate 10% failure rate
+    if(Math.random()<0.10){
+      showToast('❌ Payment failed. Please try again or use UPI.','error');
+      logEmailEvent('failure',{...user,wishName:o.wishName,price:total,orderId:'—'});
+      setTimeout(()=>showEmailPreview('failure',{...user,wishName:o.wishName,price:total,orderId:'—'}),800);
+      return;
+    }
+  }
+  // Success
+  const orderId='WC'+Date.now().toString(36).toUpperCase();
+  const link=`https://wishcraft.in/wish/${orderId}`;
+  const recName=document.getElementById('ord-rec-name').value.trim();
+  const fromName=document.getElementById('ord-from-name').value.trim();
+  const message=document.getElementById('ord-message').value.trim();
+  const driveImages=document.getElementById('ord-drive-images').value.trim();
+  const driveVideos=document.getElementById('ord-drive-videos').value.trim();
+  const music=document.getElementById('ord-music').value.trim();
+  // Save order per user
+  const key='wc_orders_'+user.email;
+  const orders=JSON.parse(localStorage.getItem(key)||'[]');
+  orders.unshift({
+    id:orderId,wishName:o.wishName,type:o.type,tier:o.tier,price:total,
+    status:'confirmed',link,method,
+    recipient:recName,from:fromName,message,
+    driveImages,driveVideos,music,voice:appState.orderVoice,
+    downloadAdded:appState.downloadAdd,
+    occasion:appState.occasion||'birthday',
+    date:new Date().toLocaleDateString('en-IN')
+  });
+  localStorage.setItem(key,JSON.stringify(orders.slice(0,50)));
+  // Show success
+  document.getElementById('success-link').value=link;
+  document.querySelectorAll('.order-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('ord-step-success').classList.add('active');
+  document.getElementById('order-steps').style.display='none';
+  // Emails
+  const emailData={...user,orderId,wishName:o.wishName,price:total,link};
+  logEmailEvent('booking',emailData);
+  setTimeout(()=>showEmailPreview('booking',emailData),800);
+  renderDashboard();
+  showToast('🎉 Order placed successfully!','success');
+}
+
+function logEmailEvent(type,data){
+  const log=JSON.parse(localStorage.getItem('wc_email_log')||'[]');
+  log.unshift({type,to:data.email,wishName:data.wishName,price:data.price,time:new Date().toISOString()});
+  localStorage.setItem('wc_email_log',JSON.stringify(log.slice(0,50)));
+}
+
+function copyLink(){
+  const v=document.getElementById('success-link').value;
+  navigator.clipboard.writeText(v).then(()=>showToast('🔗 Link copied!','success'));
+}
+
+/* ══════════════════════════════════════════
+   CUSTOM WISH
+══════════════════════════════════════════ */
+function selectVoice(v){
+  appState.voice=v;
+  ['none','male','female'].forEach(x=>{
+    const el=document.getElementById('vb-'+x);
+    if(el)el.classList.toggle('active',x===v);
+  });
+}
+
+function updateCustomPrice(){
+  const occ=document.getElementById('cust-occasion').value;
+  const del=document.getElementById('cust-delivery').value;
+  const p=(occ&&del&&customPricing[del])?'₹'+customPricing[del][occ]:'₹ —';
+  document.getElementById('cust-total').textContent=p;
+}
+
+function generateCustomWish(){
+  const user=getCurrentUser();
+  if(!user){showToast('Please sign in to create a custom wish.','error');setTimeout(()=>openAuthModal('login'),400);return;}
+  const name=document.getElementById('cust-name').value.trim();
+  const occ=document.getElementById('cust-occasion').value;
+  const del=document.getElementById('cust-delivery').value;
+  const driveImages=document.getElementById('cust-drive-images').value.trim();
+  if(!name||!occ||!del){showToast('⚠️ Please fill in name, occasion, and delivery type.','error');return;}
+  if(!driveImages){showToast('⚠️ Google Drive images link is mandatory.','error');return;}
+  const price=customPricing[del]?.[occ]||199;
+  const wishName=`Custom ${occ==='birthday'?'🎂':'💍'} — For ${name}`;
+  appState.occasion=occ;
+  initiateOrder(wishName,price,del.includes('pro')?'pro':'normal',del.includes('video')?'video':'website',occ==='birthday'?'🎂':'💍');
+  // Pre-fill fields from custom form
+  setTimeout(()=>{
+    const rn=document.getElementById('ord-rec-name');if(rn)rn.value=name;
+    const di=document.getElementById('ord-drive-images');if(di)di.value=driveImages;
+    const dv=document.getElementById('ord-drive-videos');if(dv)dv.value=document.getElementById('cust-drive-videos').value;
+    const mu=document.getElementById('ord-music');if(mu)mu.value=document.getElementById('cust-music').value;
+    const msg=document.getElementById('ord-message');if(msg)msg.value=document.getElementById('cust-script').value;
+  },200);
+}
+
+/* ══════════════════════════════════════════
+   DASHBOARD
+══════════════════════════════════════════ */
+function renderDashboard(){
+  const user=getCurrentUser();
+  const container=document.getElementById('wish-grid');
+  if(!user){
+    container.innerHTML=`<div class="empty-state"><div class="esi">🔐</div><p>Sign in to view your wish history.</p><button class="btn-primary" style="margin-top:16px" onclick="openAuthModal('login')">Sign In</button></div>`;
+    return;
+  }
+  const key='wc_orders_'+user.email;
+  const orders=JSON.parse(localStorage.getItem(key)||'[]');
+  if(!orders.length){
+    container.innerHTML=`<div class="empty-state"><div class="esi">📭</div><p>No wishes yet! Create your first magical wish above.</p></div>`;
+    return;
+  }
+  container.innerHTML=orders.map(o=>`
+    <div class="wish-item">
+      <div class="wi-header">
+        <span class="wi-title">${o.wishName}</span>
+        <span class="wi-date">${o.date}</span>
+      </div>
+      <span class="wi-status ${o.status==='confirmed'?'status-confirmed':'status-pending'}">${o.status==='confirmed'?'✓ Confirmed':'⏳ Pending'}</span>
+      <div class="wi-meta">
+        Type: ${o.type} • Tier: ${o.tier.toUpperCase()} • ₹${o.price}<br/>
+        Recipient: ${o.recipient||'—'} • Method: ${o.method||'—'}
+      </div>
+      <div class="wi-actions">
+        <button class="act-btn" onclick="copyWishLink('${o.link}')">🔗 Share</button>
+        <button class="act-btn" onclick="reorder('${o.id}')">🔄 Re-order</button>
+        <button class="act-btn del" onclick="deleteOrder('${o.id}')">✕ Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function copyWishLink(link){navigator.clipboard.writeText(link).then(()=>showToast('🔗 Wish link copied!','success'))}
+
+function reorder(id){
+  const user=getCurrentUser();
+  if(!user)return;
+  const orders=JSON.parse(localStorage.getItem('wc_orders_'+user.email)||'[]');
+  const o=orders.find(x=>x.id===id);
+  if(o)initiateOrder(o.wishName+' (Re-order)',o.price,o.tier,o.type,o.emoji||'✨');
+}
+
+function deleteOrder(id){
+  const user=getCurrentUser();if(!user)return;
+  const key='wc_orders_'+user.email;
+  let orders=JSON.parse(localStorage.getItem(key)||'[]');
+  orders=orders.filter(o=>o.id!==id);
+  localStorage.setItem(key,JSON.stringify(orders));
+  renderDashboard();
+  showToast('Order removed from history.','');
+}
+
+/* ══════════════════════════════════════════
+   MODAL HELPERS
+══════════════════════════════════════════ */
+function openOverlay(id){document.getElementById(id).classList.add('open')}
+function closeOverlay(id){document.getElementById(id).classList.remove('open')}
+
+// Close on backdrop click
+document.querySelectorAll('.overlay').forEach(ov=>{
+  ov.addEventListener('click',e=>{if(e.target===ov)closeOverlay(ov.id)});
+});
+
+/* ══════════════════════════════════════════
+   CHATBOT
+══════════════════════════════════════════ */
+const botDB={
+  'hello':['Hi there! ✨ I\'m WishBot. Ready to help you create something magical. What are we celebrating?'],
+  'hi':['Hello! 💛 I\'m here to guide you through WishCraft. Want help picking the perfect wish package?'],
+  'birthday':['🎂 Birthday wishes have 4 amazing styles:\n• Romantic 💕 • Humorous 😂\n• Mass 🎉 • Stylish 💅\n\nVideo: ₹199 Normal / ₹259 Pro\nWebsite: ₹99 Normal / ₹149 Pro'],
+  'anniversary':['💍 Anniversary wishes come in 3 heartfelt styles:\n• Romantic 💑 • Humorous 😄 • Sweet 🍯\n\nVideo: ₹239 Normal / ₹299 Pro\nWebsite: ₹129 Normal / ₹179 Pro'],
+  'pro':['⭐ Pro includes:\n• Cinematic animated intro\n• 3D visuals & parallax\n• Interactive click surprises\n• Personalized name animations\n• Premium immersive design\n\nTotally worth it for someone special!'],
+  'normal':['Normal version includes:\n• Countdown timer\n• Background music & confetti\n• Clean, beautiful animations\n• Heartfelt and pleasant experience\n\nPerfect for a warm, genuine wish! 💛'],
+  'price':['📋 Pricing:\n🎬 Video: Birthday ₹199/₹259 • Anniversary ₹239/₹299\n🌐 Website: Birthday ₹99/₹149 • Anniversary ₹129/₹179\n📥 Download add-on: +₹49'],
+  'login':['🔐 You need to sign in to place orders. Click "Sign In" in the top nav — it\'s free and takes 30 seconds!'],
+  'signup':['📝 Creating an account is FREE! Click "Sign Up" in the top nav. Once signed in, you can order, track, and re-share all your wishes.'],
+  'drive':['📁 We require a Google Drive folder link for your images. This is MANDATORY as it personalizes your wish. Videos are optional. Make sure the folder is shared with "Anyone with the link".'],
+  'music':['🎵 You can add custom background music via a YouTube link or a Google Drive audio file link. It\'s optional but adds a beautiful personal touch!'],
+  'payment':['💳 We support UPI (PhonePe, GPay, Paytm) and Credit/Debit Cards. After payment confirmation, you get a unique shareable wish link instantly!'],
+  'download':['📥 Add the download option for just ₹49 during checkout. You\'ll be able to keep your wish forever — offline too!'],
+  'voice':['🎙️ We offer Male and Female voice narration for your wish. Select your preferred voice when creating your order!'],
+  'email':['📧 We send professional automated emails for:\n• Account creation ✓\n• Booking confirmation ✓\n• Payment reminders ⏳\n• Payment failure alerts ✕'],
+  'default':['I\'m here to help! Try asking about:\n• Birthday or Anniversary wishes\n• Normal vs Pro differences\n• Pricing, payment, or delivery\n• How to add your media or music']
+};
+const quickRepliesDefault=['Birthday 🎂','Anniversary 💍','Pro vs Normal','Pricing 💰','Payment Options'];
+
+function toggleChat(){
+  const w=document.getElementById('chat-window');
+  const open=w.classList.toggle('open');
+  if(open&&!document.getElementById('chat-msgs').children.length)initChat();
+}
+function initChat(){
+  addBotMsg("Hey! 👋 I'm WishBot — your personal guide. What are you planning to celebrate today?");
+  renderQuickReplies(quickRepliesDefault);
+}
+function addBotMsg(text){
+  const msgs=document.getElementById('chat-msgs');
+  const typing=document.createElement('div');typing.className='typing-ind';
+  typing.innerHTML='<span></span><span></span><span></span>';
+  msgs.appendChild(typing);msgs.scrollTop=msgs.scrollHeight;
+  setTimeout(()=>{
+    msgs.removeChild(typing);
+    const d=document.createElement('div');d.className='msg bot';d.style.whiteSpace='pre-line';d.textContent=text;
+    msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+  },800);
+}
+function addUserMsg(text){
+  const msgs=document.getElementById('chat-msgs');
+  const d=document.createElement('div');d.className='msg user';d.textContent=text;
+  msgs.appendChild(d);msgs.scrollTop=msgs.scrollHeight;
+}
+function renderQuickReplies(arr){
+  document.getElementById('chat-qr').innerHTML=arr.map(r=>`<button class="qr-btn" onclick="sendChatMsg('${r}')">${r}</button>`).join('');
+}
+function sendChat(){
+  const input=document.getElementById('chat-input');
+  const t=input.value.trim();if(!t)return;
+  sendChatMsg(t);input.value='';
+}
+function sendChatMsg(text){
+  addUserMsg(text);
+  document.getElementById('chat-qr').innerHTML='';
+  const key=Object.keys(botDB).find(k=>text.toLowerCase().includes(k))||'default';
+  const replies=botDB[key];
+  const reply=replies[Math.floor(Math.random()*replies.length)];
+  setTimeout(()=>{addBotMsg(reply);renderQuickReplies(quickRepliesDefault)},400);
+}
+
+/* ══════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════ */
+function smoothScroll(id){
+  const el=document.getElementById(id);
+  if(el)el.scrollIntoView({behavior:'smooth',block:'start'});
+}
+
+let toastTimer;
+function showToast(msg,type=''){
+  const t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(type?' '+type+'-toast':'');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>t.classList.remove('show'),3800);
+}
+
+function sendEnquiry(){
+  const n=document.getElementById('enq-name').value.trim();
+  const m=document.getElementById('enq-msg').value.trim();
+  if(!n||!m){showToast('⚠️ Please fill in all fields.','error');return;}
+  showToast('✅ Message sent! We\'ll respond within 24 hours.','success');
+  document.getElementById('enq-name').value='';
+  document.getElementById('enq-msg').value='';
+}
+
+function showForgotMsg(){showToast('Password reset link sent to your email (demo mode).','');}
+
+/* ══════════════════════════════════════════
+   PARTICLES
+══════════════════════════════════════════ */
+(function(){
+  const c=document.getElementById('particles-canvas');
+  const ctx=c.getContext('2d');
+  let pts=[];
+  function resize(){c.width=innerWidth;c.height=innerHeight}
+  resize();window.addEventListener('resize',resize);
+  for(let i=0;i<80;i++)pts.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*2+.5,dx:(Math.random()-.5)*.3,dy:-(Math.random()*.35+.08),op:Math.random()*.5+.1,col:Math.random()>.5?'232,184,109':'232,125,139'});
+  function draw(){
+    ctx.clearRect(0,0,c.width,c.height);
+    pts.forEach(p=>{
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${p.col},${p.op})`;ctx.fill();
+      p.x+=p.dx;p.y+=p.dy;
+      if(p.y<-5){p.y=c.height+5;p.x=Math.random()*c.width}
+      if(p.x<-5||p.x>c.width+5)p.dx*=-1;
+    });requestAnimationFrame(draw);
+  }draw();
+})();
+
+/* ══════════════════════════════════════════
+   COUNTER ANIMATION
+══════════════════════════════════════════ */
+function animCount(el,target,sfx){
+  let s=0;const d=1800;
+  const step=ts=>{if(!s)s=ts;const p=Math.min((ts-s)/d,1);el.textContent=Math.floor(p*target).toLocaleString()+sfx;if(p<1)requestAnimationFrame(step)};
+  requestAnimationFrame(step);
+}
+new IntersectionObserver(entries=>{
+  if(entries[0].isIntersecting){
+    animCount(document.getElementById('cnt1'),12840,'+');
+    animCount(document.getElementById('cnt2'),9200,'+');
+    animCount(document.getElementById('cnt3'),4,'');
+    animCount(document.getElementById('cnt4'),28000,'+');
+  }
+},{threshold:.3}).observe(document.querySelector('.stats-bar'));
+
+/* ══════════════════════════════════════════
+   SCROLL REVEAL
+══════════════════════════════════════════ */
+const revObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.style.opacity=1;e.target.style.transform='translateY(0)'}});
+},{threshold:.08});
+
+/* ══════════════════════════════════════════
+   INIT
+══════════════════════════════════════════ */
+(function init(){
+  updateNavForAuth();
+  renderCategories('birthday');
+  renderVideoDemos('birthday');
+  renderWebsiteCards('birthday');
+  renderDashboard();
+  // Observe cards after render
+  setTimeout(()=>{
+    document.querySelectorAll('.cat-card,.demo-card,.wc-card,.wish-item,.occasion-card').forEach(el=>{
+      el.style.opacity=0;el.style.transform='translateY(24px)';el.style.transition='opacity .55s ease,transform .55s ease';
+      revObs.observe(el);
+    });
+  },100);
+})();
+</script>
+</body>
+</html>
